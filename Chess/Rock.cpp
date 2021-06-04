@@ -3,13 +3,16 @@
 
 Rock::Rock() {
 	this->type = 'R';
+	this->numOfMoves = 0;
 }
 Rock::Rock(char color) {
 	this->type = 'R';
+	this->numOfMoves = 0;
 	this->color = color;
 }
 Rock::Rock(char color, Pos pos) {
 	this->type = 'R';
+	this->numOfMoves = 0;
 	this->color = color;
 	this->pos = pos;
 }

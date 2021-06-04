@@ -1,8 +1,5 @@
 #include "Piece.h"
 
-Piece::Piece(void) {
-
-}
 char Piece::getColor() {
 	return color;
 }
@@ -12,4 +9,10 @@ char Piece::getType() {
 void Piece::setPos(Pos pos) {
 	this->pos = pos;
 }
+void Piece::addNumOfMoves() {
+	numOfMoves++;
+}
 
+int Piece::getNumOfMoves() {
+	return numOfMoves;
+}
