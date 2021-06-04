@@ -9,6 +9,8 @@ private:
 public:
 	Pos();
 	Pos(int, int);
+	void intput(); // Nhập kí hiệu trên bàn cờ
+	void output(); // Xuất kí hiệu trên bàn cờ
 	int getRow();
 	int getCol();
 	bool operator==(const Pos& posOther);

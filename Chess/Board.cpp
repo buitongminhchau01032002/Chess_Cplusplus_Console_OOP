@@ -44,8 +44,6 @@ void Board::move(Pos moveFromPos, Pos moveToPos) {
 
 
 void Board::play () {
-	string strPosFrom;
-	string strPosTo;
 	Pos posFrom;
 	Pos posTo;
 	
@@ -56,8 +54,7 @@ void Board::play () {
 		else
 			cout << "DEN DI" << endl;
 		cout << "Chon vi tri quan co: ";
-		getline(cin, strPosFrom);
-		posFrom = Pos::toPos(strPosFrom);
+		posFrom.intput();
 
 	} while(
 		posFrom == Pos(-1, -1) ||
@@ -70,16 +67,17 @@ void Board::play () {
 	for (int i = 0; i < 8; i++) {
 		for (int j = 0; j < 8; j++) {
 			posTo = Pos(i, j);
-			if (board[posFrom.getRow()][posFrom.getCol()]->validateMove(board, posTo) == true)
-				cout << posTo.toString() << endl;
+			if (board[posFrom.getRow()][posFrom.getCol()]->validateMove(board, posTo) == true) {
+				posTo.output();
+				cout << endl;
+			}
 		}
 	}
 
 	// Di chuyển
 	do {
 		cout << "Chon vi tri di chuyen: ";
-		getline(cin, strPosTo);
-		posTo = Pos::toPos(strPosTo);
+		posTo.intput();
 	} while (
 		posTo == Pos(-1, -1) ||
 		board[posFrom.getRow()][posFrom.getCol()]->validateMove(board, posTo) == false

@@ -1,4 +1,5 @@
 #include "Pos.h"
+#include <iostream>
 #include <string>
 using namespace std;
 
@@ -61,6 +62,10 @@ Pos Pos::toPos(std::string s) {
 		row = 6;
 	else if (s[1] == '8')
 		row = 7;
+	if (row == -1 || col == -1) {
+		row = -1;
+		col = -1;
+	}
 	return Pos(row, col);
 }
 
@@ -100,4 +105,14 @@ string Pos::toString() {
 	else if (row == 7)
 		t[1] = '8';
 	return t;
+}
+
+void Pos::intput() {
+	string t;
+	getline(cin, t);
+	*this = Pos::toPos(t);
+}
+
+void Pos::output() {
+	cout << this->toString();
 }
