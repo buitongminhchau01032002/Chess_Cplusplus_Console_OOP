@@ -1,4 +1,4 @@
-﻿Build started 04/06/2021 8:29:30 PM.
+﻿Build started 05/06/2021 9:36:13 AM.
      1>Project "D:\Chess\Chess.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\Chess.unsuccessfulbuild" because "AlwaysCreate" was specified.
@@ -23,4 +23,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:02.26
+Time Elapsed 00:00:02.90

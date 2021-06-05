@@ -30,6 +30,7 @@ void Board::move(Pos moveFromPos, Pos moveToPos) {
 		delete board[moveToPos.getRow()][moveToPos.getCol()];
 	board[moveToPos.getRow()][moveToPos.getCol()] = board[moveFromPos.getRow()][moveFromPos.getCol()];
 	board[moveToPos.getRow()][moveToPos.getCol()]->setPos(moveToPos);
+	board[moveToPos.getRow()][moveToPos.getCol()]->addNumOfMoves();
 
 
 	// Xoá quân ở ô nguồn
