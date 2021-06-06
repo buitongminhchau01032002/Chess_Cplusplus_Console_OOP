@@ -5,6 +5,6 @@ public:
 	King();
 	King(char color);
 	King(char color, Pos pos);
-	bool validateMove(Piece* board[8][8], Pos moveToPos);
+	bool validateMove(Piece*** board, Pos moveToPos);
 };
 

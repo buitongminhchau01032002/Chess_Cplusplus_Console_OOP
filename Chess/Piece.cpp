@@ -16,3 +16,7 @@ void Piece::addNumOfMoves() {
 int Piece::getNumOfMoves() {
 	return numOfMoves;
 }
+
+void Piece::setNumOfMoves(int n) {
+	numOfMoves = n;
+}
