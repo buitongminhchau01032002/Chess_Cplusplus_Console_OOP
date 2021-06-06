@@ -120,13 +120,31 @@ void Board::play () {
 	}
 
 	// Chọn vị trí di chuyển
+	bool canMove = false; //
 	do {
 		cout << "Chon vi tri di chuyen: ";
 		posTo.intput();
-	} while (
-		posTo == Pos(-1, -1) ||
-		board[posFrom.getRow()][posFrom.getCol()]->validateMove(board, posTo) == false
-		);
+		if (!(posTo == Pos(-1, -1)) && board[posFrom.getRow()][posFrom.getCol()]->validateMove(board, posTo) == true) {
+			// Di chuyển thử
+			Piece*** t = this->getBoard(); // t copy lại board
+			this->move(posFrom, posTo);
+
+			if (!this->isChecked()) { // Hợp lệ (không bị chiếu)
+				canMove = true;
+			}
+
+			// Giải phóng board, gán lại giá trị ở t
+			for (int i = 0; i < 8; i++) {
+				for (int j = 0; j < 8; j++)
+					delete board[i][j];
+			}
+			for (int i = 0; i < 8; i++)
+				delete[] board[i];
+			delete[] board;
+			board = t;
+
+		}
+	} while (!canMove);
 	this->move(posFrom, posTo); // Di chuyển
 	numOfMoves++; // Tăng nước đi
 	if (turn == 'w') // Đổi lượt đi
