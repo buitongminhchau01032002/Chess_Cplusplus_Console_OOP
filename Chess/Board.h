@@ -15,6 +15,9 @@ public:
 	void draw(); // Vẽ bàn cờ
 	bool isControlled(Pos pos); // Kiểm tra ô có bị kiểm soát bởi quân khác màu hay không
 	bool isChecked(); // Kiểm tra người chơi có lượt đi đang bị chiếu hay không
+	void promote(Pos pos); // Phong cấp
+	bool isCastlingShort(Pos posFrom); // Kiểm tra nhập thành ngắn
+	bool isCastlingLong(Pos posFrom); // Kiểm tra nhập thành dài
 	Piece*** getBoard();
 };
 

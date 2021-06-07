@@ -42,7 +42,6 @@ Board::Board() {
 	board[0][3] = new Queen('w', Pos(0, 3));
 	board[7][3] = new Queen('b', Pos(7, 3));
 
-
 	for (int i = 0; i < 8; i++)
 	{
 		board[1][i] = new Pawn('w', Pos(1, i));
@@ -65,6 +64,22 @@ void Board::move(Pos moveFromPos, Pos moveToPos) {
 
 	// Xoá quân ở ô nguồn
 	board[moveFromPos.getRow()][moveFromPos.getCol()] = NULL;
+
+	// Di chuyển xe nếu nước đi là nhập thành
+	if (board[moveToPos.getRow()][moveToPos.getCol()]->getType() == 'K' && moveFromPos.getCol() == 4) {
+		if (moveToPos.getCol() == 6) { // Nhập thành ngắn
+			board[moveToPos.getRow()][5] = board[moveFromPos.getRow()][7];
+			board[moveToPos.getRow()][5]->setPos(moveToPos);
+			board[moveToPos.getRow()][5]->addNumOfMoves();
+			board[moveFromPos.getRow()][7] = NULL;
+		}
+		if (moveToPos.getCol() == 2) { // Nhập thành dài
+			board[moveToPos.getRow()][3] = board[moveFromPos.getRow()][0];
+			board[moveToPos.getRow()][3]->setPos(moveToPos);
+			board[moveToPos.getRow()][3]->addNumOfMoves();
+			board[moveFromPos.getRow()][0] = NULL;
+		}
+	}
 }
 
 
@@ -113,9 +128,21 @@ void Board::play () {
 						delete[] board[i];
 					delete[] board;
 					board = t;
-					
 				}
 			}
+		}
+		// Kiểm tra nhập thành ngắn
+		if (this->isCastlingShort(posFrom)) {
+			Pos(posFrom.getRow(), 6).output();
+			cout << endl;
+			hasValidateMove = true;
+		}
+
+		// Kiểm tra nhập thành dài
+		if (this->isCastlingLong(posFrom)) {
+			Pos(posFrom.getRow(), 2).output();
+			cout << endl;
+			hasValidateMove = true;
 		}
 	}
 
@@ -144,8 +171,17 @@ void Board::play () {
 			board = t;
 
 		}
+		// Kiểm tra nhập thành ngắn
+		if (this->isCastlingShort(posFrom) && posTo.getRow()==posFrom.getRow() && posTo.getCol()==6)
+			canMove = true;
+
+		// Kiểm tra nhập thành dài
+		if (this->isCastlingLong(posFrom) && posTo.getRow()==posFrom.getRow() && posTo.getCol()==2)
+			canMove = true;
+		
 	} while (!canMove);
 	this->move(posFrom, posTo); // Di chuyển
+	this->promote(posTo); // Phong cấp
 	numOfMoves++; // Tăng nước đi
 	if (turn == 'w') // Đổi lượt đi
 		turn = 'b';
@@ -216,4 +252,67 @@ Piece*** Board::getBoard() {
 		}
 	}
 	return t;
+}
+
+void Board::promote(Pos pos) {
+	
+}
+
+bool Board::isCastlingShort(Pos posFrom) {
+	if (turn == 'w' && posFrom==Pos(0, 4) && board[0][4]!=NULL && board[0][7]!=NULL)
+		if (board[0][4]->getType()=='K' && 
+			board[0][7]->getType()=='R' &&
+			board[0][4]->getNumOfMoves()==0 && 
+			board[0][7]->getNumOfMoves()==0 &&
+			board[0][5] == NULL &&
+			board[0][6] == NULL &&
+			!this->isControlled(Pos(0, 4)) &&
+			!this->isControlled(Pos(0, 5)) &&
+			!this->isControlled(Pos(0, 6))
+			)
+			return true;
+	if (turn == 'b' && posFrom==Pos(7, 4) && board[7][4]!=NULL && board[7][7]!=NULL)
+		if (board[7][4]->getType()=='K' && 
+			board[7][7]->getType()=='R' &&
+			board[7][4]->getNumOfMoves()==0 && 
+			board[7][7]->getNumOfMoves()==0 &&
+			board[7][5] == NULL &&
+			board[7][6] == NULL &&
+			!this->isControlled(Pos(7, 4)) &&
+			!this->isControlled(Pos(7, 5)) &&
+			!this->isControlled(Pos(7, 6))
+			)
+			return true;
+	return false;
+}
+bool Board::isCastlingLong(Pos posFrom) {
+	if (turn == 'w' && posFrom==Pos(0, 4) && board[0][4]!=NULL && board[0][0]!=NULL)
+		if (board[0][4]->getType()=='K' && 
+			board[0][0]->getType()=='R' &&
+			board[0][4]->getNumOfMoves()==0 && 
+			board[0][0]->getNumOfMoves()==0 &&
+			board[0][1] == NULL &&
+			board[0][2] == NULL &&
+			board[0][3] == NULL &&
+			!this->isControlled(Pos(0, 1)) &&
+			!this->isControlled(Pos(0, 2)) &&
+			!this->isControlled(Pos(0, 3)) &&
+			!this->isControlled(Pos(0, 4))
+			)
+			return true;
+	if (turn == 'b' && posFrom==Pos(7, 4) && board[7][4]!=NULL && board[7][0]!=NULL)
+		if (board[7][4]->getType()=='K' && 
+			board[7][0]->getType()=='R' &&
+			board[7][4]->getNumOfMoves()==0 && 
+			board[7][0]->getNumOfMoves()==0 &&
+			board[7][1] == NULL &&
+			board[7][2] == NULL &&
+			board[7][3] == NULL &&
+			!this->isControlled(Pos(7, 1)) &&
+			!this->isControlled(Pos(7, 2)) &&
+			!this->isControlled(Pos(7, 3)) &&
+			!this->isControlled(Pos(7, 4))
+			)
+			return true;
+	return false;
 }
