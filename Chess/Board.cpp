@@ -69,13 +69,13 @@ void Board::move(Pos moveFromPos, Pos moveToPos) {
 	if (board[moveToPos.getRow()][moveToPos.getCol()]->getType() == 'K' && moveFromPos.getCol() == 4) {
 		if (moveToPos.getCol() == 6) { // Nhập thành ngắn
 			board[moveToPos.getRow()][5] = board[moveFromPos.getRow()][7];
-			board[moveToPos.getRow()][5]->setPos(moveToPos);
+			board[moveToPos.getRow()][5]->setPos(Pos(moveToPos.getRow(), 5));
 			board[moveToPos.getRow()][5]->addNumOfMoves();
 			board[moveFromPos.getRow()][7] = NULL;
 		}
 		if (moveToPos.getCol() == 2) { // Nhập thành dài
 			board[moveToPos.getRow()][3] = board[moveFromPos.getRow()][0];
-			board[moveToPos.getRow()][3]->setPos(moveToPos);
+			board[moveToPos.getRow()][3]->setPos(Pos(moveToPos.getRow(), 3));
 			board[moveToPos.getRow()][3]->addNumOfMoves();
 			board[moveFromPos.getRow()][0] = NULL;
 		}
