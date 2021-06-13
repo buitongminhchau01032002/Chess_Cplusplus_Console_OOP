@@ -255,7 +255,41 @@ Piece*** Board::getBoard() {
 }
 
 void Board::promote(Pos pos) {
-	
+	if (board[pos.getRow()][pos.getCol()]->getType() == 'P')
+	{
+		if (pos.getRow() == 0 || pos.getRow() == 7)
+		{
+			int n = 0;
+			do {
+				cout << "\nChon quan co muon phong cap: ";
+				cout << "\n1) Phong cap thanh Hau";
+				cout << "\n2) Phong cap thanh Xe";
+				cout << "\n3) Phong cap thanh Ma";
+				cout << "\n4) Phong cap thanh Tuong";
+				cout << "\nChon: ";
+				cin >> n;
+			} while (n != 1 && n != 2 && n != 3 && n != 4);
+			cin.ignore();
+			delete board[pos.getRow()][pos.getCol()];
+			switch (n)
+			{
+			case 1: 
+				board[pos.getRow()][pos.getCol()] = new Queen(turn, Pos(pos.getRow(),pos.getCol()));
+				break;
+			case 2:
+				board[pos.getRow()][pos.getCol()] = new Rook(turn, Pos(pos.getRow(), pos.getCol()));
+				break;
+			case 3:
+				board[pos.getRow()][pos.getCol()] = new Knight(turn, Pos(pos.getRow(), pos.getCol()));
+				break;
+			case 4:
+				board[pos.getRow()][pos.getCol()] = new Bishop(turn, Pos(pos.getRow(), pos.getCol()));
+				break;
+			default:
+				break;
+			}
+		}
+	}
 }
 
 bool Board::isCastlingShort(Pos posFrom) {
