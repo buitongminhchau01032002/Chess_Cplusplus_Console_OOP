@@ -7,7 +7,7 @@ class Board
 private:
 	Piece*** board; // Mảng 8x8 các con trỏ Piece thể hiện bàn cờ
 	char turn; // Lượt đi của màu nào ('w' hoặc 'b')
-	int numOfMoves; // Tổng số nước đi
+	int numOfMovesToDraw; // Số nước đi liên tiếp không bắt quân (dẫn đến hoà)
 public:
 	Board();
 	void move(Pos moveFromPos, Pos moveToPos); // Di chuyển quân cờ từ ô nguồn đến ô đích
@@ -18,6 +18,9 @@ public:
 	void promote(Pos pos); // Phong cấp
 	bool isCastlingShort(Pos posFrom); // Kiểm tra nhập thành ngắn
 	bool isCastlingLong(Pos posFrom); // Kiểm tra nhập thành dài
+	bool isCheckmated(); // Kiểm tra người chơi có lượt đi đang bị chiếu hết hay không
+	bool isDraw(); // Kiem tra hoa co
+	bool endGame(); // Kết thúc một game (hoà hoặc thắng)
 	Piece*** getBoard();
 };
 

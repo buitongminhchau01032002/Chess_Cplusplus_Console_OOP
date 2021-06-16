@@ -12,7 +12,7 @@ using namespace std;
 
 // Tạo bàn cờ ban đầu
 Board::Board() {
-	numOfMoves = 0;
+	numOfMovesToDraw = 0;
 	turn = 'w';
 	board = new Piece**[8];
 	for (int i = 0; i < 8; i++) {
@@ -112,7 +112,6 @@ void Board::play () {
 					// Di chuyển thử
 					Piece*** t = this->getBoard(); // t copy lại board
 					this->move(posFrom, posTo);
-
 					if (!this->isChecked()) { // Hợp lệ (không bị chiếu)
 						posTo.output();
 						cout << endl;
@@ -178,11 +177,14 @@ void Board::play () {
 		// Kiểm tra nhập thành dài
 		if (this->isCastlingLong(posFrom) && posTo.getRow()==posFrom.getRow() && posTo.getCol()==2)
 			canMove = true;
-		
+
 	} while (!canMove);
+	if (board[posTo.getRow()][posTo.getCol()] == NULL) // Kiểm tra có bắt quân hay không
+		numOfMovesToDraw++;
+	else
+		numOfMovesToDraw = 0;
 	this->move(posFrom, posTo); // Di chuyển
 	this->promote(posTo); // Phong cấp
-	numOfMoves++; // Tăng nước đi
 	if (turn == 'w') // Đổi lượt đi
 		turn = 'b';
 	else
@@ -191,6 +193,7 @@ void Board::play () {
 
 // Vẽ bàn cờ
 void Board::draw() {
+	system("cls");
 	cout << "   -------------------------" << endl;
 	for (int i = 7; i >= 0; i--) {
 		cout << " " << Pos(i, 1).toString()[1] << " |";
@@ -348,5 +351,128 @@ bool Board::isCastlingLong(Pos posFrom) {
 			!this->isControlled(Pos(7, 4))
 			)
 			return true;
+	return false;
+}
+
+bool Board::isCheckmated() {
+	if (!this->isChecked())
+		return false;
+	for (int fromRow = 0; fromRow < 8; fromRow++)
+		for (int fromCol = 0; fromCol < 8; fromCol++)
+			if (board[fromRow][fromCol] != NULL)
+				if (board[fromRow][fromCol]->getColor() == turn)
+					for (int toRow = 0; toRow < 8; toRow++)
+						for (int toCol = 0; toCol < 8; toCol++)
+							if (board[fromRow][fromCol]->validateMove(board, Pos(toRow, toCol)) == true) {
+								bool isReturnFalse = false;
+								// Di chuyển thử
+								Piece*** t = this->getBoard(); // t copy lại board
+								this->move(Pos(fromRow, fromCol), Pos(toRow, toCol));
+								if (!this->isChecked()) { // Hợp lệ (không bị chiếu)
+									isReturnFalse = true;
+								}
+								// Giải phóng board, gán lại giá trị ở t
+								for (int i = 0; i < 8; i++) {
+									for (int j = 0; j < 8; j++)
+										delete board[i][j];
+								}
+								for (int i = 0; i < 8; i++)
+									delete[] board[i];
+								delete[] board;
+								board = t;
+
+								if (isReturnFalse)
+									return false;
+							}
+							return true;
+}
+
+bool Board::isDraw() {
+	// Hoà khi đi đủ 50 nước không bắt quân
+	if (numOfMovesToDraw == 50)
+		return true;
+
+	// Hoà khi không đủ lực lượng chiếu hết
+	// vua và vua+tượng, vua và vua+mã
+	int Nw = 0;
+	int Nb = 0;
+	int Bw = 0;
+	int Bb = 0;
+	bool isBreak;
+	for (int i = 0; i < 8; i++) {
+		isBreak = false;
+		for (int j = 0; j < 8; j++) {
+			if (board[i][j] != NULL) {
+				// Xuất hiện quân khác ngoài Mã, Tượng, Vua
+				if (board[i][j]->getType() != 'N' && board[i][j]->getType() != 'B' && board[i][j]->getType() != 'K')
+					isBreak = true;
+				// Cộng thêm các quân là mã, tượng
+				if (board[i][j]->getType() == 'N' && board[i][j]->getColor() == 'w')
+					Nw++;
+				if (board[i][j]->getType() == 'N' && board[i][j]->getColor() == 'b')
+					Nb++;
+				if (board[i][j]->getType() == 'B' && board[i][j]->getColor() == 'w')
+					Bw++;
+				if (board[i][j]->getType() == 'B' && board[i][j]->getColor() == 'b')
+					Bb++;
+
+				if (Nw+Bw == 2 || Nb+Bb == 2)
+					isBreak = true;
+			}
+			if (isBreak)
+				break;
+		}
+		if (isBreak)
+			break;
+	}
+	if (Nw+Bw <= 1 && Nb+Bb <= 1 && !isBreak)
+		return true;
+
+	// Hoà do hết nước đi, vua không bị chiếu
+	if (!this->isChecked()) {
+		for (int fromRow = 0; fromRow < 8; fromRow++)
+			for (int fromCol = 0; fromCol < 8; fromCol++)
+				if (board[fromRow][fromCol] != NULL)
+					if (board[fromRow][fromCol]->getColor() == turn)
+						for (int toRow = 0; toRow < 8; toRow++)
+							for (int toCol = 0; toCol < 8; toCol++)
+								if (board[fromRow][fromCol]->validateMove(board, Pos(toRow, toCol)) == true) {
+									bool isReturnFalse = false;
+									// Di chuyển thử
+									Piece*** t = this->getBoard(); // t copy lại board
+									this->move(Pos(fromRow, fromCol), Pos(toRow, toCol));
+									if (!this->isChecked()) { // Hợp lệ (không bị chiếu)
+										isReturnFalse = true;
+									}
+									// Giải phóng board, gán lại giá trị ở t
+									for (int i = 0; i < 8; i++) {
+										for (int j = 0; j < 8; j++)
+											delete board[i][j];
+									}
+									for (int i = 0; i < 8; i++)
+										delete[] board[i];
+									delete[] board;
+									board = t;
+
+									if (isReturnFalse)
+										return false;
+								}
+								return true;
+	} else
+		return false;
+}
+
+bool Board::endGame() {
+	if (this->isCheckmated()) {
+		if (this->turn == 'w')
+			cout << "DEN THANG" << endl;
+		else
+			cout << "TRANG THANG" << endl;
+		return true;
+	}
+	if (this->isDraw()) {
+		cout << "HOA CO" << endl;
+		return true;
+	}
 	return false;
 }

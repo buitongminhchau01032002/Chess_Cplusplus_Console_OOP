@@ -27,6 +27,8 @@ bool Pos::operator==(const Pos& posOther) {
 }
 
 Pos Pos::toPos(std::string s) {
+	if (s.length() != 2)
+		return Pos(-1, -1);
 	int row = -1;
 	int col = -1;
 	if (s[0] == 'a')
