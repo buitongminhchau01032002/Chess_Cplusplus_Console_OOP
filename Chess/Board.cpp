@@ -49,6 +49,16 @@ Board::Board() {
 	}
 }
 
+// Destructor
+Board::~Board() {
+	for (int i = 0; i < 8; i++)
+		for (int j = 0; j < 8; j++)
+			delete board[i][j];
+	for (int i = 0; i < 8; i++)
+		delete[] board[i];
+	delete[] board;
+}
+
 
 // Di chuyển quân cờ
 // Thay đổi các quân cờ trên board
