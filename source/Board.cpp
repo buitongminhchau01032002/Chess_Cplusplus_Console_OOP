@@ -474,6 +474,7 @@ bool Board::isDraw() {
 
 bool Board::endGame() {
 	if (this->isCheckmated()) {
+		this->draw();
 		if (this->turn == 'w')
 			cout << "DEN THANG" << endl;
 		else
@@ -481,6 +482,7 @@ bool Board::endGame() {
 		return true;
 	}
 	if (this->isDraw()) {
+		this->draw();
 		cout << "HOA CO" << endl;
 		return true;
 	}
