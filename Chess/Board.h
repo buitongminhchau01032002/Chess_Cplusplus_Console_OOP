@@ -10,6 +10,7 @@ private:
 	int numOfMovesToDraw; // Số nước đi liên tiếp không bắt quân (dẫn đến hoà)
 public:
 	Board();
+	~Board();
 	void move(Pos moveFromPos, Pos moveToPos); // Di chuyển quân cờ từ ô nguồn đến ô đích
 	void play(); // Chọn quân, xuất nước đi, di chuyển
 	void draw(); // Vẽ bàn cờ
