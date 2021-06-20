@@ -1,0 +1,15 @@
+﻿Mỗi ô trên bàn cờ được kí hiệu bằng một chuỗi gồm 2 kí tự. Kí tự đầu là một chữ (từ a đến h) chỉ cột. Kí tự thứ hai là một số (từ 1 đến 8) chỉ hàng. Ví dụ: một ô ở cột e, hàng 4 được kí hiệu là e4.
+
+Mỗi quân cờ (trong chương trình) được kí hiệu bằng một chuỗi gồm 2 kí tự. Kí tự đầu là một chữ viết hoa, thể hiện loại quân cờ (K: vua, Q: hậu, R: xe, K: mã, B: tượng, P: tốt). Kí tự thứ 2 là một chữ viết thường, thể hiện màu quân cờ (w: trắng, b: đen). Ví dụ: quân hậu đen được kí hiệu Qb.
+
+Chương trình sẽ vẽ mô phỏng 1 bàn cờ để người chơi dễ dàng theo dõi.
+
+Trong mỗi lượt đi, người chơi chọn quân cờ muốn di chuyển bằng cách nhập ô chứa quân cờ đó (nhập kí hiệu ô theo quy ước ở trên). Nếu người chơi chọn một ô không hợp lệ (chọn ô không có quân cờ hoặc quân cờ không thể di chuyển,...), chương trình sẽ cho người chơi chọn lại. Lưu ý: nước đi nhập thành được thực hiện bằng cách chọn và di chuyển vua.
+Sau khi chọn ô chứa quân cờ muốn di chuyển, chương trình sẽ xuất những ô mà người chơi có thể di chuyển đến (kể cả nước bắt quân).
+Tiếp theo, người chơi cần nhập ô muốn di chuyển đến. Nếu người chơi chọn ô không hợp lệ, chương trình sẽ cho người chơi chọn lại.
+
+Trong trường hợp tốt được phong cấp, chương trình sẽ cho phép người chơi lựa chọn quân muốn phong cấp.
+
+Sau mỗi lượt đi, bàn cờ sẽ được vẽ lại.
+
+Khi kết thúc một ván cờ (đen thắng, trắng thắng hoặc hoà), chương trình sẽ xuất kết quả ván cờ và cho người chơi lựa chọn có chơi ván mới hay không.
